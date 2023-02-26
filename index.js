@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: true}));
 setInterval(async() => {
     const res = await axios.get(process.env.URL)
     console.log(res.data)
-}, "2000")
+}, 1000 * 60)
 
 app.get('/', (req, res) => {
     res.status(200).json({
@@ -37,7 +37,7 @@ const quotes = async () => {
     }
 }
 
-bot.command('random', async (ctx, next) => {
+bot.command('random', async (ctx) => {
     const {data} = await quotes()
     const words = data[0].q.split(' ')
     const randomWord = Math.floor(Math.random() * words.length)
