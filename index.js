@@ -1,8 +1,25 @@
 import { Telegraf } from "telegraf";
+import express from "express";
 import axios from "axios";
 import { config } from "dotenv";
 
 config()
+const PORT = process.env.PORT || 5000
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+setInterval(async() => {
+    const res = await axios.get(process.env.URL)
+    console.log(res.data)
+}, "2000")
+
+app.get('/', (req, res) => {
+    res.status(200).json({
+        API: "RUNNING",
+        status: 200
+    })
+})
 
 const bot = new Telegraf(process.env.TOKEN);
 
@@ -29,6 +46,10 @@ bot.command('random', async (ctx, next) => {
 
 Author: ${data[0].a}`
     })
+})
+
+app.listen(PORT, () => {
+    console.log("server running")
 })
 
 bot.launch()
